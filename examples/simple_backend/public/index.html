@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Chat</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .chat-container {
+            width: 500px;
+            height: 600px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 20px;
+            background: #667eea;
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        .message-user {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        .message-text {
+            color: #333;
+        }
+        .message-time {
+            font-size: 11px;
+            color: #999;
+            margin-top: 5px;
+        }
+        .input-area {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 10px;
+        }
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            padding: 12px 25px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="header">
+            <h2>💬 Simple Chat</h2>
+            <p>Hosted on .hmouth domain!</p>
+        </div>
+        
+        <div class="messages" id="messages">
+            <div style="text-align: center; color: #999; padding: 40px;">
+                No messages yet. Say hi! 👋
+            </div>
+        </div>
+        
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Your name" style="max-width: 120px;">
+            <input type="text" id="messageInput" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        let lastMessageId = 0;
+
+        // Load messages
+        async function loadMessages() {
+            try {
+                const response = await fetch('/api/messages');
+                const data = await response.json();
+                
+                if (data.messages.length > 0) {
+                    const messagesDiv = document.getElementById('messages');
+                    messagesDiv.innerHTML = data.messages.map(msg => {
+                        const time = new Date(msg.timestamp).toLocaleTimeString();
+                        return `
+                            <div class="message">
+                                <div class="message-user">${msg.user}</div>
+                                <div class="message-text">${msg.message}</div>
+                                <div class="message-time">${time}</div>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+                }
+            } catch (error) {
+                console.error('Failed to load messages:', error);
+            }
+        }
+
+        // Send message
+        async function sendMessage() {
+            const userInput = document.getElementById('userInput');
+            const messageInput = document.getElementById('messageInput');
+            
+            const user = userInput.value.trim() || 'Anonymous';
+            const message = messageInput.value.trim();
+            
+            if (!message) return;
+            
+            try {
+                await fetch('/api/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ user, message })
+                });
+                
+                messageInput.value = '';
+                loadMessages();
+            } catch (error) {
+                console.error('Failed to send message:', error);
+            }
+        }
+
+        // Enter to send
+        document.getElementById('messageInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') sendMessage();
+        });
+
+        // Auto-refresh
+        setInterval(loadMessages, 2000);
+        loadMessages();
+    </script>
+</body>
+</html>

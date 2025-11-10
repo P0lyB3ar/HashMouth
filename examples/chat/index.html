@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <title>HashMouth - Secure Anonymous Chat</title>
+    <link rel="stylesheet" href="Css/style.css">
+</head>
+<body>
+
+<div class="container">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar">
+        <div class="titlediv">
+            <h1 class="title">🔒 HashMouth</h1>
+            <p class="titlep">Secure Anonymous Communication</p>
+        </div>
+        
+        <input class="search" type="text" id="searchPeers" placeholder="Search chats...">
+
+        <div class="chat-list" id="chatList">
+            <div class="chat-item active" onclick="selectChat('everyone')">
+                <strong>📢 Everyone</strong>
+                <p>Send to all users</p>
+            </div>
+        </div>
+
+        <div class="profile-box">
+            <label style="font-size: 12px; color: #999;">Your Name:</label>
+            <input type="text" id="userName" placeholder="Enter your name" style="width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 5px; margin-top: 5px;">
+        </div>
+    </aside>
+
+    <!-- CHAT MAIN -->
+    <main class="chat">
+        <div class="chat-header">
+            <span id="chatDisplayName">Select a chat</span>
+            <div class="header-info">
+                <span id="encryptionStatus" title="End-to-end encrypted">🔐 Encrypted</span>
+                <button class="call-btn" id="callBtn" title="Voice call (coming soon)">📞</button>
+            </div>
+        </div>
+
+        <div class="messages" id="messages">
+            <div class="welcome-message">
+                <h2>Welcome to HashMouth! 🎉</h2>
+                <p>Enter your name and start chatting</p>
+                <p class="small-text">Send to everyone or specific users</p>
+            </div>
+        </div>
+
+        <div class="chat-input">
+            <button class="emoji-btn" title="Emoji (coming soon)">😊</button>
+            <button class="file-btn" id="fileBtn" title="Attach file (coming soon)">📎</button>
+            <input type="file" id="fileInput" style="display: none;">
+            <input id="msgInput" type="text" placeholder="Type your message..." onkeypress="handleEnter(event)">
+            <button class="send-btn" id="sendBtn">➤</button>
+        </div>
+    </main>
+
+    <!-- RIGHT CHAT INFO PANEL -->
+    <aside class="chat-info">
+        <h3>Online Users</h3>
+        <div id="usersList" style="margin-top: 20px;">
+            <p style="color: #999; text-align: center;">Loading users...</p>
+        </div>
+
+        <button class="collapsible" style="margin-top: 20px;">ℹ️ Info</button>
+        <div class="content">
+            <p><strong>Current Chat:</strong> <span id="currentChatInfo">Everyone</span></p>
+            <p><strong>Total Messages:</strong> <span id="messageCount">0</span></p>
+            <p><strong>Online Users:</strong> <span id="onlineCount">0</span></p>
+        </div>
+
+    </aside>
+
+</div>
+
+<script src="Js/chat.js"></script>
+</body>
+</html>

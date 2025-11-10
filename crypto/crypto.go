@@ -1,7 +1,6 @@
 package crypto
 
 import (
-	"crypto/cipher"
 	"crypto/rand"
 	"errors"
 	"io"
