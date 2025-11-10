@@ -86,16 +86,6 @@ go run cmd/dht_chat.go
 - Node.js 14+
 - npm packages: express, cors
 
-## 🆚 Comparison
-
-| Feature | Simple Chat | .hmouth | Ultra Anonymous | DHT Chat |
-|---------|-------------|---------|-----------------|----------|
-| Setup | Easy | Medium | Medium | Easy |
-| Anonymity | Low | Medium | Maximum | Medium |
-| Speed | Fast | Medium | Slow | Fast |
-| Discovery | Manual | DHT | Manual | DHT |
-| Best For | Friends | Hosting | Privacy | Public |
-
 ## 🤝 Contributing
 
 Contributions welcome! This is an experimental project.
